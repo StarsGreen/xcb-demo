@@ -32,8 +32,9 @@
 #include <xcb/xcb_aux.h>
 #include <xcb/xcb_image.h>
 #include <xcb/xcb_atom.h>
+#include <xcb/xcb_event.h>
 
-/* Needed for xcb_set_wm_protocols() */
+/* Needed for xcb_icccm_set_wm_protocols() */
 #include <xcb/xcb_icccm.h>
 
 #define XCB_ALL_PLANES ~0
@@ -76,7 +77,6 @@ typedef struct
   
 }flame;
 
-static xcb_atom_t get_atom (xcb_connection_t *connection, const char *atomName);
 static void title_set (flame *f, const char *title);
 static int  ilog2 (unsigned int n);
 static void flame_set_palette (flame *f);
@@ -85,6 +85,12 @@ static void flame_set_random_flame_base (flame *f);
 static void flame_modify_flame_base (flame *f);
 static void flame_process_flame (flame *f);
 static void flame_draw_flame (flame *f);
+
+static xcb_atom_t get_atom(xcb_connection_t* c, const char *name)
+{
+  xcb_intern_atom_cookie_t cookie = xcb_intern_atom(c, 0, strlen(name), name);
+  return xcb_intern_atom_reply(c, cookie, NULL)->atom;
+}
 
 flame *
 flame_init ()
@@ -215,13 +221,13 @@ main ()
   flame_set_flame_zero (f);
   flame_set_random_flame_base (f);
 
-  xcb_atom_t deleteWindowAtom = xcb_atom_get(f->xcb.c, "WM_DELETE_WINDOW");
-  xcb_atom_t wmprotocolsAtom = xcb_atom_get(f->xcb.c, "WM_PROTOCOLS");
+  xcb_atom_t deleteWindowAtom = get_atom(f->xcb.c, "WM_DELETE_WINDOW");
+  xcb_atom_t wmprotocolsAtom = get_atom(f->xcb.c, "WM_PROTOCOLS");
   /* Listen to X client messages in order to be able to pickup
      the "delete window" message that is generated for example
      when someone clicks the top-right X button within the window
      manager decoration (or when user hits ALT-F4). */
-  xcb_set_wm_protocols (f->xcb.c, wmprotocolsAtom, f->xcb.draw, 1, &deleteWindowAtom);
+  xcb_icccm_set_wm_protocols (f->xcb.c, f->xcb.draw, wmprotocolsAtom, 1, &deleteWindowAtom);
 
   bool finished = false;
   while (!finished)

@@ -9,9 +9,11 @@
 #include <xcb/xcb_aux.h>
 #include <xcb/xcb_image.h>
 #include <xcb/xcb_atom.h>
+#include <xcb/xcb_event.h>
+
 #define XCB_ALL_PLANES ~0
 
-/* Needed for xcb_set_wm_protocols() */
+/* Needed for xcb_icccm_set_wm_protocols() */
 #include <xcb/xcb_icccm.h>
 
 #include "julia.h"
@@ -120,6 +122,12 @@ draw_julia (Data *datap)
 	       0, 0, 0);
 }
 
+static xcb_atom_t get_atom(xcb_connection_t* c, const char *name)
+{
+  xcb_intern_atom_cookie_t cookie = xcb_intern_atom(c, 0, strlen(name), name);
+  return xcb_intern_atom_reply(c, cookie, NULL)->atom;
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -186,13 +194,13 @@ main (int argc, char *argv[])
 
   palette_julia (&data);
 
-  xcb_atom_t deleteWindowAtom = xcb_atom_get(data.conn, "WM_DELETE_WINDOW");
-  xcb_atom_t wmprotocolsAtom = xcb_atom_get(data.conn, "WM_PROTOCOLS");
+  xcb_atom_t deleteWindowAtom = get_atom(data.conn, "WM_DELETE_WINDOW");
+  xcb_atom_t wmprotocolsAtom = get_atom(data.conn, "WM_PROTOCOLS");
   /* Listen to X client messages in order to be able to pickup
      the "delete window" message that is generated for example
      when someone clicks the top-right X button within the window
      manager decoration (or when user hits ALT-F4). */
-  xcb_set_wm_protocols (data.conn, wmprotocolsAtom, data.draw, 1, &deleteWindowAtom);
+  xcb_icccm_set_wm_protocols (data.conn, data.draw, wmprotocolsAtom, 1, &deleteWindowAtom);
 
   xcb_flush (data.conn); 
 
