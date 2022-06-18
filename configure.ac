@@ -2,7 +2,7 @@ AC_PREREQ(2.57)
 AC_INIT([xcb-demo],0.1,[xcb@lists.freedesktop.org])
 AC_CONFIG_SRCDIR([Makefile.am])
 AM_INIT_AUTOMAKE([foreign dist-bzip2])
-AM_CONFIG_HEADER(config.h)
+AC_CONFIG_HEADERS([config.h])
 
 AC_PROG_CC
 dnl AC_PROG_INSTALL
@@ -21,4 +21,5 @@ PKG_CHECK_MODULES(XCBRANDR, xcb-randr)
 PKG_CHECK_MODULES(XCBXF86DRI, xcb-xf86dri)
 PKG_CHECK_MODULES(XCBXV, xcb-xv)
 
-AC_OUTPUT([Makefile tests/Makefile])
+AC_CONFIG_FILES([Makefile tests/Makefile])
+AC_OUTPUT
