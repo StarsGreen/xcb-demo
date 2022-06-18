@@ -1,7 +1,7 @@
 AC_PREREQ(2.57)
 AC_INIT([xcb-demo],0.1,[xcb@lists.freedesktop.org])
 AC_CONFIG_SRCDIR([Makefile.am])
-AM_INIT_AUTOMAKE([foreign dist-bzip2])
+AM_INIT_AUTOMAKE([foreign dist-xz])
 AC_CONFIG_HEADERS([config.h])
 
 AC_PROG_CC
