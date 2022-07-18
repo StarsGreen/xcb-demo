@@ -256,7 +256,7 @@ int draw_window(xcb_connection_t *conn, xcb_render_query_pict_formats_reply_t *r
     alpha_color.blue = 0x0000;
     alpha_color.alpha = 0xffff;
 
-    /* Create the trapeziod dimensions */
+    /* Create the trapezoid dimensions */
     traps[0].top = make_fixed(300, 32000);
     traps[0].bottom = make_fixed(416, 0);
     traps[0].left.p1.y = make_fixed(250, 0);
@@ -551,7 +551,7 @@ int main(int argc, char *argv[])
     draw_window(c, formats_reply);
 #endif
     
-    /* It's very important to free the replys. We don't want memory leaks. */
+    /* It's very important to free the replies. We don't want memory leaks. */
     free(version_reply);
     free(formats_reply);
 
