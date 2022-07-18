@@ -1,8 +1,8 @@
 /*
  * $XFree86: xc/programs/xrandr/xrandr.c,v 1.11 2002/10/14 18:01:43 keithp Exp $
  *
- * Copyright © 2001 Keith Packard, member of The XFree86 Project, Inc.
- * Copyright © 2002 Hewlett Pacard Company, Inc.
+ * Copyright Â© 2001 Keith Packard, member of The XFree86 Project, Inc.
+ * Copyright Â© 2002 Hewlett Pacard Company, Inc.
  *
  * Permission to use, copy, modify, distribute, and sell this software and its
  * documentation for any purpose is hereby granted without fee, provided that
